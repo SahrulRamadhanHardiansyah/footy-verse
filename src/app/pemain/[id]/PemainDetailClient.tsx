@@ -1,9 +1,8 @@
-// app/pemain/[id]/PemainDetailClient.tsx
-
 "use client";
 
-import { ArrowLeft, SoccerBall, PersonSimpleRun, Shield, Cardholder } from "phosphor-react";
+import { ArrowLeft, SoccerBall, PersonSimpleRun, Shield, Cardholder, Star } from "phosphor-react";
 import Link from "next/link";
+import { useFavorites } from "../../hooks/useFavorites";
 
 interface PlayerDetails {
   player: {
@@ -30,6 +29,8 @@ interface PlayerDetails {
 
 export default function PemainDetailClient({ details }: { details: PlayerDetails }) {
   const { player, statistics } = details;
+  const { toggleFavorite, isFavorite, isLoadingFavorites } = useFavorites();
+  const isFavorited = isFavorite("player", player.id);
 
   return (
     <>
@@ -42,7 +43,7 @@ export default function PemainDetailClient({ details }: { details: PlayerDetails
         {/* Kartu Info Utama Pemain */}
         <div className="bg-white rounded-lg shadow-md p-6 flex flex-col sm:flex-row items-center gap-6">
           <img src={player.photo} alt={player.name} className="h-40 w-40 rounded-full object-cover border-4 border-gray-200" />
-          <div className="text-center sm:text-left">
+          <div className="flex-grow text-center sm:text-left">
             <h1 className="text-4xl font-extrabold text-gray-800">{player.name}</h1>
             <p className="text-lg text-gray-600">
               {player.nationality} | Umur: {player.age}
@@ -52,6 +53,15 @@ export default function PemainDetailClient({ details }: { details: PlayerDetails
               <span>Berat: {player.weight}</span>
             </div>
           </div>
+
+          <button
+            onClick={() => toggleFavorite("player", player.id)}
+            disabled={isLoadingFavorites}
+            className="p-2 rounded-full hover:scale-105 hover:-translate-y-0.5 ease-in-out duration-300 transition-all"
+            aria-label="Tambahkan ke favorit"
+          >
+            <Star size={32} weight={isFavorited ? "fill" : "regular"} className={isFavorited ? "text-yellow-400" : "text-gray-400"} />
+          </button>
         </div>
 
         {/* Statistik per Kompetisi */}

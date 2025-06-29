@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft } from "phosphor-react";
+import { ArrowLeft, Star } from "phosphor-react";
+import { useFavorites } from "../../hooks/useFavorites";
 
 interface Team {
   id: number;
@@ -89,6 +90,8 @@ function FixtureItem({ fixture }: { fixture: Fixture }) {
 
 export default function KlubDetailClient({ details }: { details: ClubDetails }) {
   const { team, squad, fixtures } = details;
+  const { toggleFavorite, isFavorite, isLoadingFavorites } = useFavorites();
+  const isFavorited = isFavorite("team", details.team.team.id);
 
   return (
     <>
@@ -101,7 +104,8 @@ export default function KlubDetailClient({ details }: { details: ClubDetails }) 
         {/* Info Club */}
         <div className="bg-white rounded-lg shadow-md p-6 flex flex-col md:flex-row items-center gap-6">
           <img src={team.team.logo} alt={team.team.name} className="h-24 w-24 object-contain" />
-          <div className="text-center md:text-left">
+
+          <div className="flex-grow text-center md:text-left">
             <h1 className="text-3xl font-bold text-gray-800">{team.team.name}</h1>
             <p className="text-gray-500">
               Didirikan: {team.team.founded} | {team.team.country}
@@ -110,6 +114,15 @@ export default function KlubDetailClient({ details }: { details: ClubDetails }) 
               {team.venue.name} ({team.venue.city}) - Kapasitas: {team.venue.capacity.toLocaleString("id-ID")}
             </p>
           </div>
+
+          <button
+            onClick={() => toggleFavorite("team", details.team.team.id)}
+            disabled={isLoadingFavorites}
+            className="p-2 rounded-full hover:scale-104 hover:-translate-y-0.5 ease-in-out duration-200 transition-transform"
+            aria-label="Tambahkan ke favorit"
+          >
+            <Star size={28} weight={isFavorited ? "fill" : "regular"} className={isFavorited ? "text-yellow-400" : "text-gray-400"} />
+          </button>
         </div>
 
         {/* Bagian pertandingan */}

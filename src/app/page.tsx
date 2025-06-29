@@ -5,6 +5,7 @@ import PlayerStats from "./components/PlayerStats";
 import AllLeaguesStandings from "./components/AllLeaguesStandings";
 import FixturesList from "./components/FixturesList";
 import GreatestPlayers from "./components/GreatestPlayers";
+import UserMenu from "./components/UserMenu";
 
 const popularLeagues = [
   { id: 39, name: "Premier League", logo: "https://media.api-sports.io/football/leagues/39.png" },
@@ -23,7 +24,10 @@ export default function Home() {
   return (
     <main className="p-4 sm:p-6 md:p-8 bg-gray-100 min-h-screen font-sans">
       <div className="max-w-7xl mx-auto space-y-8">
-        <h1 className="text-3xl font-bold text-gray-800">Footyverse Dashboard</h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">Footyverse Dashboard</h1>
+          <UserMenu />
+        </div>
 
         {/* Bagian Jadwal & Hasil Pertandingan */}
         <FixturesList />
